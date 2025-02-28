@@ -13,21 +13,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -35,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -100,25 +111,6 @@ data class GameRoute(val id : Long)
         )
     }
 
-    // Ecran d'affichage d'accueil, qui contient la liste de tous les jeux
-    @Composable
-    fun HomeScreen(navController: NavHostController) {
-        Scaffold(topBar = {
-            TopAppBar(colors = topAppBarColors(
-                containerColor = Color(144,238,144),
-                titleContentColor = Color.Black,
-            ), title = { Text("My Games List") })
-        }, modifier = Modifier.fillMaxSize()) { innerPadding ->
-            LazyColumn(modifier = Modifier.padding(innerPadding)) {
-                items(IGDB.games.size) {                 //va itérer sur le nb de jeu
-                        index ->
-                    val game = IGDB.games[index]        // on récupère le jeu
-                    GameCard(game, navController)       // on crée la carte du jeu
-                }
-            }
-        }
-    }
-
     // Permet d'afficher la case d'un jeu sur le HomeScreen
     @Composable
     fun GameCard(game : Game, navController: NavController){
@@ -159,6 +151,88 @@ data class GameRoute(val id : Long)
                     maxLines = 1,                           // permet de mettre les genres sur une seule ligne
                     overflow = TextOverflow.Ellipsis        // permet de mettre les ... quand la liste de genres est trop longue
                 )
+            }
+        }
+    }
+
+    // Ecran d'affichage d'accueil, qui contient la liste de tous les jeux
+    @Composable
+    fun HomeScreen(navController: NavHostController) {
+        var isSearchVisible by rememberSaveable { mutableStateOf(false) }
+        var searchText by rememberSaveable { mutableStateOf("") }
+
+        // Filtrer la liste des jeux en fonction du texte recherché
+        val filteredGames = IGDB.games.filter { game ->
+            game.name.contains(searchText, ignoreCase = true) ||
+                    IGDB.genres
+                        .filter {game.genres.contains(it.id)}
+                        .find {it.name.contains(searchText, ignoreCase = true)} != null ||
+                    IGDB.platforms
+                        .filter { game.platforms.contains(it.id)}
+                        .find {it.name.contains(searchText, ignoreCase = true)} != null
+        }
+
+        Scaffold(topBar = {
+            TopAppBar(colors = topAppBarColors(
+                containerColor = Color(144,238,144),
+                titleContentColor = Color.Black,
+            ), title = { Text("My Games List") },
+                actions = {
+                    IconButton(onClick = { isSearchVisible = !isSearchVisible }) {
+                        Icon(
+                            imageVector = if (isSearchVisible) Icons.Default.Close else Icons.Default.Search,  // en fonction de la valeur de isSearchVisible, l'icone sera une loupe ou une croix
+                            contentDescription = "Afficher/Cacher la recherche"
+                        )
+                    }
+                })
+        }, modifier = Modifier.fillMaxSize()) { innerPadding ->
+            if (isSearchVisible) {      // Affichage conditionnel de la barre de recherche
+                TextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    placeholder = { Text("Rechercher...") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding)
+                )
+
+            }
+            if(isSearchVisible) {
+                if (filteredGames.isEmpty()) {
+                    Text(
+                        "No match found :(",
+                        modifier = Modifier.padding(innerPadding).offset(x = 10.dp, y = 70.dp),
+                        fontStyle = FontStyle.Italic
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .offset(y = if (isSearchVisible) 60.dp else 0.dp)
+                    ) {
+                        items(
+                            items = filteredGames,
+                            itemContent = {                 //va itérer sur chaque jeu correspondant à la recherche
+                                    game ->
+                                //val game = IGDB.games[index]        // on récupère le jeu
+                                GameCard(game, navController)       // on crée la carte du jeu
+                            })
+                    }
+                }
+            }else{
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .offset(y = if (isSearchVisible) 60.dp else 0.dp)
+                ) {
+                    items(
+                        items = IGDB.games,
+                        itemContent = {                 //va itérer sur chaque jeu correspondant à la recherche
+                                game ->
+                            //val game = IGDB.games[index]        // on récupère le jeu
+                            GameCard(game, navController)       // on crée la carte du jeu
+                        })
+                }
             }
         }
     }
@@ -205,6 +279,7 @@ data class GameRoute(val id : Long)
                     genres,                               // affiche les genres
                     textAlign = TextAlign.Center,
                     fontSize = 13.sp,
+                    fontStyle = FontStyle.Italic,
                     maxLines = 1,                           // permet de mettre les genres sur une seule ligne
                     overflow = TextOverflow.Ellipsis        // permet de mettre les ... quand la liste de genres est trop longue
                 )
