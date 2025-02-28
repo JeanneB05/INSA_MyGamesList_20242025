@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,11 +29,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -46,6 +50,8 @@ import androidx.navigation.toRoute
 import coil3.compose.AsyncImage
 import com.insa.mygamelist.data.Game
 import com.insa.mygamelist.data.IGDB
+import com.insa.mygamelist.data.Platform
+import com.insa.mygamelist.data.Platform_Logo
 import com.insa.mygamelist.ui.theme.MyGamesListTheme
 import kotlinx.serialization.Serializable
 import okhttp3.internal.notifyAll
@@ -83,6 +89,17 @@ data class GameRoute(val id : Long)
 
     }
 
+    // Méthode qui permet d'afficher les images des logos
+    @Composable
+    fun LogoDisplay(platform : Platform){
+        AsyncImage(
+            model = "https:" + IGDB.platform_logos.find({ platform.platform_logo == it.id })?.url,
+            contentDescription = "Logos of the platforms",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(90.dp).padding(10.dp)
+        )
+    }
+
     // Ecran d'affichage d'accueil, qui contient la liste de tous les jeux
     @Composable
     fun HomeScreen(navController: NavHostController) {
@@ -100,32 +117,6 @@ data class GameRoute(val id : Long)
                 }
             }
         }
-    }
-
-    // Ecran d'affichage des détails d'un jeu
-    @Composable
-    fun GameScreen(id : Long, navController: NavHostController) {
-        val game = IGDB.games.find({ id == it.id })
-        val name = game?.name ?: "Unfound"          //Obligé de mettre un Elvis car Text ne prend pas de type String? (type renvoyé par .find)
-        Scaffold(topBar = {
-            TopAppBar(colors = topAppBarColors(
-                containerColor = Color(144,238,144),
-                titleContentColor = Color.Black,
-            ), title = { Text(name) },
-                navigationIcon = { IconButton(onClick = {navController.navigateUp()}){      // flèche de retour arrière
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Localized description"
-                    )
-                }})
-        }, modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Row (modifier=Modifier.padding(innerPadding)){
-                Text(id.toString())
-            }
-        }
-        /*Button(onClick = { onNavigateToHomePage() }) {
-            Text("Go to Profile")
-        }*/
     }
 
     // Permet d'afficher la case d'un jeu sur le HomeScreen
@@ -167,6 +158,68 @@ data class GameRoute(val id : Long)
                     mygenres,                               // affiche les genres
                     maxLines = 1,                           // permet de mettre les genres sur une seule ligne
                     overflow = TextOverflow.Ellipsis        // permet de mettre les ... quand la liste de genres est trop longue
+                )
+            }
+        }
+    }
+
+    // Ecran d'affichage des détails d'un jeu
+    @Composable
+    fun GameScreen(id : Long, navController: NavHostController) {
+        val game = IGDB.games.find({ id == it.id })
+        val name = game?.name ?: "Unfound"          //Obligé de mettre un Elvis car Text ne prend pas de type String? (type renvoyé par .find)
+        val genres = IGDB.genres.filter { it.id in (game?.genres ?: listOf(String)) }.joinToString(", ") { it.name }  // on récupère tous les genres associé au jeu et on les sépare avec une ,
+        val summary = game?.summary ?: "Unfound"
+        val platforms = IGDB.platforms.filter { it.id in game?.platforms!! }
+
+        Scaffold(topBar = {
+            TopAppBar(colors = topAppBarColors(
+                containerColor = Color(144,238,144),
+                titleContentColor = Color.Black,
+            ), title = { Text(name) },
+                navigationIcon = { IconButton(onClick = {navController.navigateUp()}){      // flèche de retour arrière
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Localized description"
+                    )
+                }})
+        }, modifier = Modifier.fillMaxSize()) { innerPadding ->
+            Column (horizontalAlignment = Alignment.CenterHorizontally,
+                modifier=Modifier.padding(innerPadding)){
+                Text(
+                    name,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.W600,
+                    style = TextStyle(textDecoration = TextDecoration.Underline)
+                )
+
+                AsyncImage(
+                    model = "https:" + IGDB.covers.find({ game?.cover == it.id })?.url,
+                    contentDescription = "Cover of the game" + name,
+                    modifier = Modifier.size(250.dp).padding(10.dp)
+                )
+
+                Text(
+                    genres,                               // affiche les genres
+                    textAlign = TextAlign.Center,
+                    fontSize = 13.sp,
+                    maxLines = 1,                           // permet de mettre les genres sur une seule ligne
+                    overflow = TextOverflow.Ellipsis        // permet de mettre les ... quand la liste de genres est trop longue
+                )
+
+                LazyRow {
+                    items(platforms.size) {         //on va itérer sur chaque plateforme associée au jeu
+                            index ->
+                        val platform = platforms[index]
+                        LogoDisplay(platform)       // affichage du logo du jeu
+                    }
+                }
+
+                Text(
+                    summary,
+                    modifier = Modifier.padding(10.dp)
                 )
             }
         }
