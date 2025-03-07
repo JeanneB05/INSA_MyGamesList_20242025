@@ -1,10 +1,10 @@
-Projet : Créer une application mobile sous AndroidStudio permettant de gérer une base de données de jeux vidéo.
+#Projet : Créer une application mobile sous AndroidStudio permettant de gérer une base de données de jeux vidéo.
 
-Séance 1 (HomeScreen) :
+##Séance 1 (HomeScreen) :
   - Création de "game cards" qui stockent les premières informations sur les jeux
   - Création d'une liste déroulante de ces game cards, avec une game card par jeu
 
-Séance 2 (Navigation) :
+##Séance 2 (Navigation) :
   - Au toucher sur une game card, on va vers un second écran
   - Le retour fonctionne par :
 
@@ -16,7 +16,7 @@ Séance 2 (Navigation) :
   - Après le retour depuis les détails d’un jeu vers la liste des jeux, le titre est à nouveau “MyGamesList”
   - Lors d’un retour réalisé sur la liste des jeux, on quitte l’application
 
-Séance 3 (GameScreen) :
+##Séance 3 (GameScreen) :
 
   Sur l'écran le second écran : 
   - La App Bar affiche le nom du jeu 
@@ -32,7 +32,7 @@ Séance 3 (GameScreen) :
     
     ○​ Résumé du jeu
 
-Séance 4 (Recherche) : 
+##Séance 4 (Recherche) : 
   - Icône de recherche dans la AppBar (loupe ou croix, dépend de si on est en recherche ou non) 
   - Si la recherche est vide, tous les jeux sont affichés
 ​  - Dès la première lettre tapée dans la recherche, la liste est filtrée sur :
@@ -42,6 +42,7 @@ Séance 4 (Recherche) :
 ​      ○​ Le genre
 
 ​      ○​ La plate-forme
+
   - S’il n’y a aucun jeu correspondant à la recherche, on affiche un écran “No match :(”
   - Lorsque on touche un jeu, on va à l’écran de détails correspondant et l’AppBar sur cet écran :
     
@@ -52,7 +53,7 @@ Séance 4 (Recherche) :
 ​      ○​ Affiche le nom du jeu
 ​  - Lorsque on retourne en arrière, le filtre est toujours présent et la valeur du filtre est toujours dans la recherche​
 
-Séance 5 (Favoris) :
+##Séance 5 (Favoris) :
   - Chaque cellule de la liste des jeux a une icône “favori”
   - Cette icône change d’apparence selon le fait qu’un jeu est favori ou non
 ​  - Cette icône réagit au toucher et change l’état “favori” du jeu
