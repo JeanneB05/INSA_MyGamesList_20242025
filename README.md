@@ -18,23 +18,34 @@ Séance 3 (GameScreen) :
   Sur l'écran le second écran : 
   - La App Bar affiche le nom du jeu 
   - Sous la AppBar sont affichées toutes les informations sur le jeu :
+    
         ○​ Nom
+    
         ○​ Image
+    
         ○​ Genres
+    
         ○​ Logos des plateformes
+    
         ○​ Résumé du jeu
 
 Séance 4 (Recherche) : 
   - Icône de recherche dans la AppBar (loupe ou croix, dépend de si on est en recherche ou non) 
   - Si la recherche est vide, tous les jeux sont affichés
 ​  - Dès la première lettre tapée dans la recherche, la liste est filtrée sur :
+
       ○​ Le nom
+    
 ​      ○​ Le genre
+
 ​      ○​ La plate-forme
   - S’il n’y a aucun jeu correspondant à la recherche, on affiche un écran “No match :(”
   - Lorsque on touche un jeu, on va à l’écran de détails correspondant et l’AppBar sur cet écran :
+    
 ​      ○​ Ne permet pas de recherche
+
 ​      ○​ Affiche la flèche de retour
+
 ​      ○​ Affiche le nom du jeu
 ​  - Lorsque on retourne en arrière, le filtre est toujours présent et la valeur du filtre est toujours dans la recherche​
 
