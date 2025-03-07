@@ -51,6 +51,7 @@
 ​      ○​ Affiche la flèche de retour
 
 ​      ○​ Affiche le nom du jeu
+
 ​  - Lorsque on retourne en arrière, le filtre est toujours présent et la valeur du filtre est toujours dans la recherche​
 
 ## Séance 5 (Favoris) :
