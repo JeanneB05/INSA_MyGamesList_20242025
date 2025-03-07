@@ -46,13 +46,13 @@
   - S’il n’y a aucun jeu correspondant à la recherche, on affiche un écran “No match :(”
   - Lorsque on touche un jeu, on va à l’écran de détails correspondant et l’AppBar sur cet écran :
     
-​      ○​ Ne permet pas de recherche
+    ○​ Ne permet pas de recherche
 
-​      ○​ Affiche la flèche de retour
+    ○​ Affiche la flèche de retour
+    
+    ○​ Affiche le nom du jeu
 
-​      ○​ Affiche le nom du jeu
-
-​  - Lorsque on retourne en arrière, le filtre est toujours présent et la valeur du filtre est toujours dans la recherche​
+  - Lorsque on retourne en arrière, le filtre est toujours présent et la valeur du filtre est toujours dans la recherche​
 
 ## Séance 5 (Favoris) :
   - Chaque cellule de la liste des jeux a une icône “favori”
