@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,7 +24,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -114,6 +118,7 @@ data class GameRoute(val id : Long)
     // Permet d'afficher la case d'un jeu sur le HomeScreen
     @Composable
     fun GameCard(game : Game, navController: NavController){
+        var isFavorite by rememberSaveable { mutableStateOf(false) }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -131,19 +136,13 @@ data class GameRoute(val id : Long)
                 contentDescription = "Cover of the game" + game.name,
                 modifier = Modifier.size(90.dp).padding(10.dp)
             )
-            Column() {
+            Column(modifier = Modifier.width(250.dp).align(Alignment.CenterVertically)) {
                 Text(
                     game.name,          // on affiche le nom du jeu
                     fontSize = 17.sp,
                     fontWeight = FontWeight.W600,
                     style = TextStyle(textDecoration = TextDecoration.Underline)
                 )
-                //var g = "Genres : "
-                //for (elt in IGDB.games[0].genres) {
-                //    g += IGDB.genres.find({ elt == it.id })?.name + ", "
-                //}
-                //g = g.dropLast(2)
-                // -> ce n'est pas très propre, en meilleur Kotlin ça donne la ligne juste en dessous
 
                 val mygenres = "Genres : " + IGDB.genres.filter { it.id in game.genres }.joinToString(", ") { it.name }  // on récupère tous les genres associé au jeu et on les sépare avec une ,
                 Text(
@@ -151,6 +150,14 @@ data class GameRoute(val id : Long)
                     maxLines = 1,                           // permet de mettre les genres sur une seule ligne
                     overflow = TextOverflow.Ellipsis        // permet de mettre les ... quand la liste de genres est trop longue
                 )
+            }
+            Column(){
+                IconButton(onClick = { isFavorite = !isFavorite }) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,  // en fonction de la valeur de isSearchVisible, l'icone sera une loupe ou une croix
+                        contentDescription = "Afficher/Cacher la recherche"
+                    )
+                }
             }
         }
     }
