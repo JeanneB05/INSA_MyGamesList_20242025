@@ -22,15 +22,15 @@ Séance 3 (GameScreen) :
   - La App Bar affiche le nom du jeu 
   - Sous la AppBar sont affichées toutes les informations sur le jeu :
     
-        ○​ Nom
+    ○​ Nom
     
-        ○​ Image
+    ○​ Image
     
-        ○​ Genres
+    ○​ Genres
+
+    ○​ Logos des plateformes
     
-        ○​ Logos des plateformes
-    
-        ○​ Résumé du jeu
+    ○​ Résumé du jeu
 
 Séance 4 (Recherche) : 
   - Icône de recherche dans la AppBar (loupe ou croix, dépend de si on est en recherche ou non) 
@@ -38,7 +38,7 @@ Séance 4 (Recherche) :
 ​  - Dès la première lettre tapée dans la recherche, la liste est filtrée sur :
 
       ○​ Le nom
-    
+
 ​      ○​ Le genre
 
 ​      ○​ La plate-forme
