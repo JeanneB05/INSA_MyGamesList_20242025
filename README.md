@@ -7,8 +7,11 @@ Séance 1 (HomeScreen) :
 Séance 2 (Navigation) :
   - Au toucher sur une game card, on va vers un second écran
   - Le retour fonctionne par :
-      ○​ Appui sur le bouton “back” OU swipe depuis les côtés (dépendant du mode d’action activé sur le smartphone)
-      ○​ Appui sur la flèche de l’AppBar
+
+    ○​ Appui sur le bouton “back” OU swipe depuis les côtés (dépendant du mode d’action activé sur le smartphone)
+
+    ○​ Appui sur la flèche de l’AppBar
+    
   -​ Le titre de la AppBar sur l’écran d’un jeu est le titre du jeu
   - Après le retour depuis les détails d’un jeu vers la liste des jeux, le titre est à nouveau “MyGamesList”
   - Lors d’un retour réalisé sur la liste des jeux, on quitte l’application
