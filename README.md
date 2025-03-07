@@ -37,11 +37,11 @@
   - Si la recherche est vide, tous les jeux sont affichés
 ​  - Dès la première lettre tapée dans la recherche, la liste est filtrée sur :
 
-      ○​ Le nom
+    ○​ Nom
 
-​      ○​ Le genre
+    ○​ Genre
 
-​      ○​ La plate forme
+    ○​ Plateforme
 
   - S’il n’y a aucun jeu correspondant à la recherche, on affiche un écran “No match :(”
   - Lorsque on touche un jeu, on va à l’écran de détails correspondant et l’AppBar sur cet écran :
