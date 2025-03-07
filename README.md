@@ -14,6 +14,7 @@ Séance 2 (Navigation) :
   - Lors d’un retour réalisé sur la liste des jeux, on quitte l’application
 
 Séance 3 (GameScreen) :
+
   Sur l'écran le second écran : 
   - La App Bar affiche le nom du jeu 
   - Sous la AppBar sont affichées toutes les informations sur le jeu :
