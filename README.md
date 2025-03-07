@@ -15,8 +15,8 @@ Séance 2 (Navigation) :
 
 Séance 3 (GameScreen) :
   Sur l'écran le second écran : 
-    - La App Bar affiche le nom du jeu 
-    - Sous la AppBar sont affichées toutes les informations sur le jeu :
+  - La App Bar affiche le nom du jeu 
+  - Sous la AppBar sont affichées toutes les informations sur le jeu :
         ○​ Nom
         ○​ Image
         ○​ Genres
