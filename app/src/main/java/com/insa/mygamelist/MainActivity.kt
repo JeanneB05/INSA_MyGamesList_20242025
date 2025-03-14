@@ -169,6 +169,7 @@ data class GameRoute(val id : Long)
     fun HomeScreen(navController: NavHostController, favoriteGames: MutableState<Set<Long>>) {
         var isSearchVisible by rememberSaveable { mutableStateOf(false) }       // Permet de savoir si l'icône de recherche est activée ou non
         var searchText by rememberSaveable { mutableStateOf("") }               // Contiendra le texte de recherche rentré par l'utilisateur
+        var isFavoriteSelected by rememberSaveable { mutableStateOf(false) }       // Permet de savoir si on veut afficher la liste des favoris ou non
 
         // Filtre la liste des jeux en fonction du texte recherché
         val filteredGames = IGDB.games.filter { game ->
@@ -193,6 +194,12 @@ data class GameRoute(val id : Long)
                             contentDescription = "Afficher/Cacher la recherche"
                         )
                     }
+                    IconButton(onClick = { isFavoriteSelected = !isFavoriteSelected }) {
+                        Icon(
+                            imageVector = if (isFavoriteSelected) Icons.Default.Favorite else Icons.Default.FavoriteBorder,  // en fonction de la valeur de isSearchVisible, l'icône sera une loupe ou une croix
+                            contentDescription = "Afficher/Cacher la recherche"
+                        )
+                    }
                 })
         }, modifier = Modifier.fillMaxSize()) { innerPadding ->
             if (isSearchVisible) {      // Affichage conditionnel de la barre de recherche
@@ -204,9 +211,6 @@ data class GameRoute(val id : Long)
                         .fillMaxWidth()
                         .padding(innerPadding)
                 )
-
-            }
-            if(isSearchVisible) {
                 if (filteredGames.isEmpty()) {
                     Text(
                         text = "No match found :(",
@@ -226,15 +230,22 @@ data class GameRoute(val id : Long)
                     }
                 }
             }else{
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .offset(y = if (isSearchVisible) 60.dp else 0.dp)
-                ) {
-                    items(
-                        items = IGDB.games,         // Va itérer sur chaque jeu correspondant à la recherche
-                        itemContent = { game -> GameCard(game, navController, favoriteGames)}       // On crée la carte du jeu
-                    )
+                LazyColumn (modifier = Modifier.padding(innerPadding)){
+                    if (!isFavoriteSelected){
+                        items(IGDB.games.size){
+                                index ->
+                            val game =IGDB.games[index]
+                            GameCard(game, navController, favoriteGames)
+                        }
+                    }else{
+                        items(favoriteGames.value.size){
+                                index ->
+                            val game = IGDB.games.find{favoriteGames.value.toList()[index] == it.id}
+                            if (game != null) {
+                                GameCard(game, navController, favoriteGames)
+                            }
+                        }
+                    }
                 }
             }
         }
