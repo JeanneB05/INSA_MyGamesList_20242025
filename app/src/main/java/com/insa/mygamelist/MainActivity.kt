@@ -59,6 +59,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import coil3.compose.AsyncImage
 import com.insa.mygamelist.data.Game
 import com.insa.mygamelist.data.IGDB
@@ -171,15 +173,15 @@ data class GameRoute(val id : Long)
         var searchText by rememberSaveable { mutableStateOf("") }               // Contiendra le texte de recherche rentré par l'utilisateur
         var isFavoriteSelected by rememberSaveable { mutableStateOf(false) }       // Permet de savoir si on veut afficher la liste des favoris ou non
 
-        // Filtre la liste des jeux en fonction du texte recherché
+        // Filtre la liste des jeux en fonction du texte recherché et de si l'affichage des favoris est demandé
         val filteredGames = IGDB.games.filter { game ->
-            game.name.contains(searchText, ignoreCase = true) ||
-                    IGDB.genres
-                        .filter {game.genres.contains(it.id)}
-                        .find {it.name.contains(searchText, ignoreCase = true)} != null ||
-                    IGDB.platforms
-                        .filter { game.platforms.contains(it.id)}
-                        .find {it.name.contains(searchText, ignoreCase = true)} != null
+            val matchesSearch = game.name.contains(searchText, ignoreCase = true) ||
+                    IGDB.genres.any { it.id in game.genres && it.name.contains(searchText, ignoreCase = true) } ||
+                    IGDB.platforms.any { it.id in game.platforms && it.name.contains(searchText, ignoreCase = true) }
+
+            val isFavorite = favoriteGames.value.contains(game.id)
+
+            matchesSearch && (!isFavoriteSelected || isFavorite)
         }
 
         Scaffold(topBar = {
