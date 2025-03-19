@@ -29,13 +29,13 @@ Le but de cette séance était de pouvoir naviguer entre différentes pages de n
 ## Séance 3 - Configuration du GameScreen
 Cette séance avait pour but de gérer l'affichage du détail d'un jeu. Cette page doit contenir :
 - Une App Bar qui affiche le nom du jeu
-- Sous l'App Bar sont affichées les informations du jeu :  
-  ○​ Le nom en gras souligné  
-  ○​ L'image de couverture
-  ○​ Le(s) genre(s)  
-  ○​ Le(s) logo(s) des plateformes qui supportent le jeu  
-  ○​ Un résumé du jeu  
-  Tous ces critères sont respectés.
+  - Sous l'App Bar sont affichées les informations du jeu :  
+    ○​ Le nom en gras souligné  
+    ○​ L'image de couverture
+    ○​ Le(s) genre(s) en italique
+    ○​ Le(s) logo(s) des plateformes qui supportent le jeu  
+    ○​ Un résumé du jeu  
+    Tous ces critères sont respectés.
 
 ## Séance 4 - Recherche
 Cette séance avait pour but de paramétrer la fonction de recherche de notre application.
@@ -59,17 +59,17 @@ Ces fonctionnalités sont toutes implémentées, nous n'avons pas de bugs.
 Le but de cette séance était d'implémenter une fonction de mise en favori des jeux.
 - Chaque cellule de la liste des jeux a une icône “favori”
 - Cette icône change d’apparence selon le fait qu’un jeu est favori ou non (respectivement un coeur plein ou vide)
-- Cette icône réagit au toucher et change l’état “favori” du jeu.
-- Les Game Screens contiennent aussi une icône “favori” dans l'App Bar.
-- Celui-ci a la bonne apparence suivant si le jeu est déjà “favori” ou non.
-- Un toucher sur cete icône change l’état “favori” du jeu.
-- L’état des jeux “favoris” est cohérent entre la liste des jeux et les détails de celui-ci (i.e. changer l’état “favori” d’un jeu dans le détail de celui-ci se reflète dans la liste de la Home Page).
+- Cette icône réagit au toucher et change l’état “favori” du jeu
+- Les Game Screens contiennent aussi une icône “favori” dans l'App Bar
+- Celui-ci a la bonne apparence suivant si le jeu est déjà “favori” ou non
+- Un toucher sur cette icône change l’état “favori” du jeu
+- L’état des jeux “favoris” est cohérent entre la liste des jeux et les détails de celui-ci (i.e. changer l’état “favori” d’un jeu dans le détail de celui-ci se reflète dans la liste de la Home Page)
 
 Toutes ces conditions sont respectées.
 
 ## Séance 6 - TP Facultatif - Passage à une API en ligne
 
-Après configuration de notre compte Twitch, nous avons récupérer le Client-ID et le Client-secret, puis l'access Token (avec une comande curl).
+Après configuration de notre compte Twitch, nous avons récupéré le Client-ID et le Client-secret, puis l'access Token (avec une comande curl).
 ```
 curl -X POST "https://id.twitch.tv/oauth2/token?
     client_id=*client_id*&
@@ -84,6 +84,8 @@ curl -X POST \
     -H 'Authorization: Bearer *token* ' \
     -d 'fields name, url; limit 500;' | jq | bat -l json
 ```
+
+Nous avons également commencé la rédaction de l'APIService, qui devait effectuer les requêtes HTTP.
 Nous ne sommes pas allées plus loin dans l'intégration de l'API.
 Nous avons préféré améliorer notre code et ajouter des fonctionnalités supplémentaires au vu du temps qu'il nous restait.
 
