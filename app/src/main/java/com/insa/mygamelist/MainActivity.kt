@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -137,9 +138,11 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogoDisplay(platform: Platform) {
         AsyncImage(
-            model = "https:" + IGDB.platform_logos.find { platform.platform_logo == it.id }?.url,       // On récupère l'image
+            model = "https:" + (IGDB.platform_logos.find { platform.platform_logo == it.id }?.url?.replace(
+                "jpg",
+                "png"
+            ) ?: "//commons.wikimedia.org/wiki/File:No_Image_Available.jpg"),       // On récupère l'image et s'il n'y en a pas, on met une image not found
             contentDescription = "Logos of the platforms",
-            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(90.dp)
                 .padding(10.dp)
@@ -150,7 +153,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun GameCard(game: Game, navController: NavController, favoriteGames: MutableState<Set<Long>>) {
         val isFavorite = favoriteGames.value.contains(game.id)      // On vérifie si le jeu est enregistré en tant que favori
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -159,7 +161,7 @@ class MainActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { navController.navigate(GameRoute(game.id)) }      // Permet de passer sur le GameScreen du jeu
-                .background(Color(229, 224, 232)),
+                .background(MaterialTheme.colorScheme.surfaceVariant) // Applique la couleur
         ) {
             // Affichage de l'image à gauche
             AsyncImage(
@@ -170,7 +172,7 @@ class MainActivity : ComponentActivity() {
                     .padding(10.dp)
             )
             Column(modifier = Modifier
-                .width(250.dp)
+                .width(230.dp)
                 .align(Alignment.CenterVertically)) {
                 // Affichage du nome du jeu au milieu
                 Text(
@@ -282,10 +284,7 @@ class MainActivity : ComponentActivity() {
         var isSearchVisible by rememberSaveable { mutableStateOf(false) }       // Permet de savoir si l'icône de recherche est activée ou non
 
         Scaffold(topBar = {
-            TopAppBar(colors = topAppBarColors(
-                containerColor = Color(144, 238, 144),
-                titleContentColor = Color.Black,
-            ), title = { Text("My Games List") },
+            TopAppBar(title = { Text("My Games List") },
                 actions = {
                     IconButton(onClick = { isSearchVisible = !isSearchVisible }) {
                         Icon(
@@ -371,10 +370,7 @@ class MainActivity : ComponentActivity() {
         val pagerState = rememberPagerState(initialPage, pageCount = { filteredGames.size })
 
         Scaffold(topBar = {
-            TopAppBar(colors = topAppBarColors(
-                containerColor = Color(144, 238, 144),
-                titleContentColor = Color.Black,
-            ), title = { Text(filteredGames[pagerState.currentPage].name) },        // On met le titre du jeu actuel
+            TopAppBar(title = { Text(filteredGames[pagerState.currentPage].name) },        // On met le titre du jeu actuel
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {      // Flèche de retour arrière
                         Icon(
