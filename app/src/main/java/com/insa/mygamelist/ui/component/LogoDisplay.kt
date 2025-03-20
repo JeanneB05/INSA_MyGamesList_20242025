@@ -17,7 +17,7 @@ fun LogoDisplay(platform: Platform) {
             "jpg",
             "png"
         ) ?: "//commons.wikimedia.org/wiki/File:No_Image_Available.jpg"),       // On récupère l'image et s'il n'y en a pas, on met une image not found
-        contentDescription = "Logos of the platforms",
+        contentDescription = "Logos of the platform" + platform.name,
         modifier = Modifier
             .size(90.dp)
             .padding(10.dp)

@@ -56,13 +56,13 @@ fun HomeScreen(
                 IconButton(onClick = toggleIsSearchVisible) {
                     Icon(
                         imageVector = if (isSearchVisible) Icons.Default.Close else Icons.Default.Search,  // en fonction de la valeur de isSearchVisible, l'icône sera une loupe ou une croix
-                        contentDescription = "Afficher/Cacher la recherche"
+                        contentDescription = "Show or hide the research"
                     )
                 }
                 IconButton(onClick = { toggleIsFavoriteSelected() }) {
                     Icon(
                         imageVector = if (isFavoriteSelected) Icons.Default.Favorite else Icons.Default.FavoriteBorder,  // en fonction de la valeur de isSearchVisible, l'icône sera une loupe ou une croix
-                        contentDescription = "Afficher/Cacher les favoris"
+                        contentDescription = "Show or hide the favorites"
                     )
                 }
             })
@@ -72,7 +72,7 @@ fun HomeScreen(
             TextField(
                 value = searchText,
                 onValueChange = { setSearchText(it) },
-                placeholder = { Text("Rechercher...") },
+                placeholder = { Text("Search...") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(innerPadding)

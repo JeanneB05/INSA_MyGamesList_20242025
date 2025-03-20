@@ -86,7 +86,7 @@ fun GameCard(game: Game, navController: NavController, favoriteGames: MutableSta
             }) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,  // en fonction de la valeur de isFavorite, l'icône sera un coeur rempli ou non
-                    contentDescription = "Favori"
+                    contentDescription = "Favorite"
                 )
             }
         }
