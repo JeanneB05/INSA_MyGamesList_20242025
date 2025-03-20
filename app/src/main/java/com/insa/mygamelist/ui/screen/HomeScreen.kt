@@ -62,7 +62,7 @@ fun HomeScreen(
                 IconButton(onClick = { toggleIsFavoriteSelected() }) {
                     Icon(
                         imageVector = if (isFavoriteSelected) Icons.Default.Favorite else Icons.Default.FavoriteBorder,  // en fonction de la valeur de isSearchVisible, l'icône sera une loupe ou une croix
-                        contentDescription = "Afficher/Cacher la recherche"
+                        contentDescription = "Afficher/Cacher les favoris"
                     )
                 }
             })
